@@ -1,0 +1,42 @@
+#li .layui-layout-admin .layui-body{
+    top:0;
+    transition: 0.5s;
+}
+#li .layui-plus-menu{
+    left: 0;
+    top:0;
+    transition: 0.5s;
+    z-index: 999;
+}
+#li .layui-plus-menu{
+    width: 200px;
+    height: 100%;
+    position: fixed;
+    display: inline-block;
+}
+#li .menuIcon{
+    position: absolute;
+    right: -15px;
+    z-index: 999;
+    top: 50%;
+    margin-top: -25px;
+    transform: scaleX(0.5);
+}
+#li .menuIcon .icon{
+    font-size: 20px;
+    color: #2f363c;
+    cursor: pointer;
+    font-weight: bold;
+}
+#li .menuPlus.layui-side-scroll{
+    height:calc(100% - 40px)
+}
+#li .hideMneu{
+    left: -200px;
+}
+#li .hideBody{
+    left:0
+}
+#li .layui-side{
+    position: initial;
+}
