@@ -12,12 +12,12 @@
 
 ### 项目目录
 
- - `common/` (公共文件夹)
+ - `common/`      (公共文件夹)
     - `config.js` (公用配置文件)
- - `index.html` （初始html: 最初的index渲染页面）
- - `main.js` ( 入口文件：Electron的入口文件,用来创建Electron应用 )
- - `preload.js` （预加载脚本:将 Electron 的 process.versions 对象暴露给渲染器）
- - `renderer.js` （执行脚本:将 process.versions 读取渲染出来）
+ - `index.html`   (初始html: 最初的index渲染页面)
+ - `main.js`      (入口文件：Electron的入口文件,用来创建Electron应用)
+ - `preload.js`   (预加载脚本:将 Electron 的 process.versions 对象暴露给渲染器)
+ - `renderer.js`  (执行脚本:将 process.versions 读取渲染出来)
 
 <span id="zhilin"></span>
 
@@ -29,6 +29,12 @@ yarn install
 
 # 启动项目
 yarn dev
+
+# 打包项目 (免安装版本)
+yarn package
+
+# 打包项目 (exe安装软件)
+yarn mark
 ```
 
 <span id="guzan"/>
