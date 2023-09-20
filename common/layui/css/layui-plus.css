@@ -1,42 +1,95 @@
-#li .layui-layout-admin .layui-body{
-    top:0;
-    transition: 0.5s;
+/*CSS变量*/
+:root {
+    /**/
+    --meunW: 240px;
+    --meunS: 260px;
+    --meunT: -240px;
+    /**/
+    --iconH: 60px;
+    --Hicon: calc(100% - 60px)
 }
+
+/*左侧Menu*/
 #li .layui-plus-menu{
     left: 0;
     top:0;
     transition: 0.5s;
     z-index: 999;
-}
-#li .layui-plus-menu{
-    width: 200px;
+    width: var(--meunW);
     height: 100%;
     position: fixed;
     display: inline-block;
 }
+.layui-nav.layui-nav-tree{
+    width: var(--meunW);
+}
+.layui-layout-admin .layui-side{
+    width: var(--meunW);
+}
+.layui-side-scroll{
+    width: var(--meunS);
+}
 #li .menuIcon{
-    position: absolute;
-    right: -15px;
-    z-index: 999;
-    top: 50%;
-    margin-top: -25px;
-    transform: scaleX(0.5);
+    height: var(--iconH);
+    line-height: var(--iconH);
+    position: relative;
+    text-align: center;
+}
+#li .menuIcon>h1{
+    font-size: 16px;
+    display: inline-block;
+}
+#li .menuIcon>span{
+    font-size: 12px;
+    display: inline-block;
+    transform: scale(0.8);
+    transform-origin: left;
 }
 #li .menuIcon .icon{
     font-size: 20px;
-    color: #2f363c;
+    color: #fff;
     cursor: pointer;
-    font-weight: bold;
+    position: absolute;
+    z-index: 99999;
+    transform: scaleX(0.6);
+    right: 5px;
+    top: 0;
 }
 #li .menuPlus.layui-side-scroll{
-    height:calc(100% - 40px)
+    height: var(--Hicon)
 }
+#li .layui-side{
+    position: initial;
+    height: var(--Hicon);
+}
+
+//动画
 #li .hideMneu{
-    left: -200px;
+    left: var(--meunT);
+}
+#li .hideMneu .menuIcon .icon{
+    right: -20px;
+    color: #2f363c!important;
+} 
+#li .hideMneu{
+    left: var(--meunT);
 }
 #li .hideBody{
     left:0
 }
-#li .layui-side{
-    position: initial;
+
+/*内容Body*/
+.layui-body{
+    left: var(--meunW);
 }
+#li .layui-layout-admin .layui-body{
+    top:0;
+    transition: 0.5s;
+}
+#li .layui-body>div{
+    padding:40px 20px;
+}
+
+
+
+

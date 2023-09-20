@@ -10,7 +10,6 @@
     "start": "electron-forge start",
     "package": "electron-forge package",
     "make": "electron-forge make",
-    "deploy": "sh deploy.sh"
   },
   "devDependencies": {
     "@electron-forge/cli": "^6.4.2",
