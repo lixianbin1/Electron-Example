@@ -1,5 +1,18 @@
-const { app, BrowserWindow ,Menu} = require('electron')
+const { app,ipcMain, BrowserWindow ,Menu} = require('electron')
 const path = require('path') // 路径模块
+const Store = require('electron-store');
+const store = new Store();
+/* 存储文件路径 */
+// console.log(store.path);
+
+// 定义ipcRenderer监听事件
+ipcMain.on('setStore', (_, key, value) => {
+  store.set(key, value)
+})
+ipcMain.on('getStore', (_, key) => {
+  let value = store.get(key)
+  _.returnValue = value || ""
+})
 
 // 设置自定义菜单
 const template=[]

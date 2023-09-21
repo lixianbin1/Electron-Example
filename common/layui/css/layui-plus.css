@@ -2,11 +2,21 @@
 :root {
     /**/
     --meunW: 240px;
-    --meunS: 260px;
-    --meunT: -240px;
+    --meunS: calc(var(--meunW) + 20px);
+    --meunT: calc(0px - var(--meunW));
     /**/
     --iconH: 60px;
-    --Hicon: calc(100% - 60px)
+    --setsH: 60px;
+    --search: 40px;
+    --Hicon: calc(100% - var(--iconH) - var(--setsH) - var(--search));
+    /*背景*/
+    --bgColor: #2e3342;
+    --bdColor: #444b61;
+}
+/*公用样式*/
+.bgBox{
+    background-color: var(--bgColor);
+    border: 1px solid var(--bdColor);
 }
 
 /*左侧Menu*/
@@ -62,8 +72,80 @@
     position: initial;
     height: var(--Hicon);
 }
+/*搜索*/
+#li .layui-menu-search{
+    height: var(--search);
+    line-height: var(--search);
+    display: flex;
+    align-items: center;
+}
+#li .layui-menu-search .search-input{
+    border: 0;
+    border-radius: 15px;
+    height: 30px;
+    background-color: #fff;
+    width: 100%;
+    padding-left: 1em;
+    padding-right: 1em;
+    margin: 0 15px;
+}
 
-//动画
+/*设置*/
+#li .layui-side-seting{
+    height: var(--setsH);
+    padding: 0 15px;
+    display: flex;
+    align-items: center;
+}
+
+/*按钮 动画*/
+#li .button{
+    align-items: center;
+    background: none;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    display: flex;
+    font-family: "Poppins", sans-serif;
+    font-size: 12px;
+    height: 30px;
+    padding: 0 20px;
+    position: relative;
+    text-decoration: none;
+    z-index: 1;
+}
+#li .button:before{
+    background: #33383b;
+    background: linear-gradient(60deg, #3a3e52 0%, #606788 100%);
+    box-shadow: -1px 1px 1px 0px #808dcb inset, 0px 0px 0px 4px rgba(14, 16, 20, 0.7);
+}
+#li .button:before, #li .button:after{
+    border-radius: 50px;
+    content: "";
+    display: block;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    transition: -webkit-clip-path 275ms ease-in-out;
+    transition: clip-path 275ms ease-in-out;
+    transition: clip-path 275ms ease-in-out, -webkit-clip-path 275ms ease-in-out;
+}
+#li .button:after{
+    background: #a53ab4;
+    background: linear-gradient(90deg, #a53ab4 0%, #f45757 100%);
+    box-shadow: -1px 1px 1px 0px #f79393 inset, 0px 0px 0px 4px rgba(14, 16, 20, 0.7);
+}
+#li .button:after{
+    clip-path: inset(50% 0 50% 0);
+}
+#li .button:hover:after{
+    clip-path: inset(0 0 0 0);
+}
+
+/*左侧 动画*/
 #li .hideMneu{
     left: var(--meunT);
 }

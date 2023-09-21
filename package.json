@@ -1,5 +1,5 @@
 {
-  "name": "Electron-Example",
+  "name": "electron-example",
   "version": "1.0.0",
   "main": "main.js",
   "repository": "git@github.com:lixianbin1/Electron-Example.git",
@@ -9,7 +9,7 @@
     "dev": "electron .",
     "start": "electron-forge start",
     "package": "electron-forge package",
-    "make": "electron-forge make",
+    "make": "electron-forge make"
   },
   "devDependencies": {
     "@electron-forge/cli": "^6.4.2",
@@ -31,6 +31,7 @@
     }
   },
   "dependencies": {
-    "electron-squirrel-startup": "^1.0.0"
+    "electron-squirrel-startup": "^1.0.0",
+    "electron-store": "^8.1.0"
   }
 }
