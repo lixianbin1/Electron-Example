@@ -16,6 +16,9 @@ const electronHandler = {
       const resp = ipcRenderer.sendSync("getStore", key)
       return resp
     },
+    clearStorae() {
+      ipcRenderer.send("clearStore")
+    },
   }
 }
 contextBridge.exposeInMainWorld('electron', electronHandler);

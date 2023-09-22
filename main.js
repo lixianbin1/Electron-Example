@@ -13,6 +13,9 @@ ipcMain.on('getStore', (_, key) => {
   let value = store.get(key)
   _.returnValue = value || ""
 })
+ipcMain.on('clearStore', (_, key, value) => {
+  store.clear()
+})
 
 // 设置自定义菜单
 const template=[]

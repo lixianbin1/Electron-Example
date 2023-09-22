@@ -17,7 +17,7 @@
         <div class="menuIcon bgBox">
           <h1>Electron Example</h1>
           <span>v0.1.0</span>
-          <i class="layui-icon layui-icon-prev icon"></i> 
+          <i class="layui-icon li-indent layui-icon-prev icon"></i> 
         </div>
         <!--搜索模块-->
         <div class="layui-menu-search bgBox">
@@ -26,45 +26,18 @@
         <!-- 左侧导航区域 -->
         <div class="layui-side">
           <div class="layui-side-scroll">
-            <ul class="layui-nav layui-nav-tree" lay-filter="test">
-              <li class="layui-nav-item layui-nav-itemed">
-                <a class="" href="javascript:;">menu group 1</a>
-                <dl class="layui-nav-child">
+            <!-- <ul class="li-nav-ui">
+              <li class="li-nav-item bgBox">
+                <a class="" href="javascript:;">wenj</a>
+                <i class="layui-icon li-edit-icon layui-icon-more-vertical"></i>
+                <dl class="li-nav-child">
                   <dd><a href="javascript:;">menu 1</a></dd>
                   <dd><a href="javascript:;">menu 2</a></dd>
                   <dd><a href="javascript:;">menu 3</a></dd>
                   <dd><a href="javascript:;">the links</a></dd>
                 </dl>
               </li>
-              <li class="layui-nav-item layui-nav-itemed">
-                <a class="" href="javascript:;">menu group 1</a>
-                <dl class="layui-nav-child">
-                  <dd><a href="javascript:;">menu 1</a></dd>
-                  <dd><a href="javascript:;">menu 2</a></dd>
-                  <dd><a href="javascript:;">menu 3</a></dd>
-                  <dd><a href="javascript:;">the links</a></dd>
-                </dl>
-              </li>
-              <li class="layui-nav-item layui-nav-itemed">
-                <a class="" href="javascript:;">menu group 1</a>
-                <dl class="layui-nav-child">
-                  <dd><a href="javascript:;">menu 1</a></dd>
-                  <dd><a href="javascript:;">menu 2</a></dd>
-                  <dd><a href="javascript:;">menu 3</a></dd>
-                  <dd><a href="javascript:;">the links</a></dd>
-                </dl>
-              </li>
-              <li class="layui-nav-item">
-                <a href="javascript:;">menu group 2</a>
-                <dl class="layui-nav-child">
-                  <dd><a href="javascript:;">list 1</a></dd>
-                  <dd><a href="javascript:;">list 2</a></dd>
-                  <dd><a href="javascript:;">超链接</a></dd>
-                </dl>
-              </li>
-              <li class="layui-nav-item"><a href="javascript:;">click menu item</a></li>
-              <li class="layui-nav-item"><a href="javascript:;">the links</a></li>
-            </ul>
+            </ul> -->
           </div>
         </div>
         <div class="layui-side-seting bgBox">
@@ -93,6 +66,9 @@
         </div>
       </div>
     </div>
+    <!--菜单工具-->
+    <div class="include" file="./component/CreateToolbox.html"></div>
+    <div id="load"></div>
     <script src="./Pages/Home/index.js"></script>
   </body>
 </html>
