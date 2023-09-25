@@ -169,7 +169,7 @@
     transition: 0.5s;
 }
 #li .layui-body>div{
-    padding:40px 20px;
+    padding:20px;
 }
 
 
@@ -184,6 +184,9 @@
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
+}
+.li-nav-item{
+    position:relative;
 }
 .li-nav-child{
     display:none
@@ -227,3 +230,13 @@
     background: rgb(169,166,166,0.2);
 }
 #load{display:none}
+
+/*弹窗*/
+.layui-footer{
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+.layui-layer{
+    border-radius:10px;
+}

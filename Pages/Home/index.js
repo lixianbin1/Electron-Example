@@ -1,23 +1,62 @@
 // 配置初始化数据
-const Menu = electron.ipcRenderer.getStoreValue('menu')
-if(!Menu){
-  $('#load').load('./Stores/menu.json',(text)=>{
-    let JsonText=JSON.parse(text)
-    electron.ipcRenderer.setStoreValue('menu',JsonText.menu)
+var Menu = []
+function getMenu(){
+  return new Promise((resolve,reject)=>{
+    try{
+      Menu = electron.ipcRenderer.getStoreValue('menu')
+      if(!Menu){
+        $('#load').load('./Stores/menu.json',(text)=>{
+          Menu=JSON.parse(text).menu
+          console.log(Menu,JSON.parse(text))
+          electron.ipcRenderer.setStoreValue('menu',Menu)
+          resolve(Menu)
+          // readyMenu()
+        })
+      }else{
+        resolve(Menu)  
+      }
+    }catch(err){
+      reject(err)
+    }
+  })
+}
+
+//设置弹窗开关
+function setEdit(){
+  $('.li-edit-icon').click((e)=>{
+    let Top = $(e.target).parent('.li-nav-item').offset().top
+    if(Top < $('body').height()/2){
+      $('.li-list-to').css('top',Top + 40)
+    }else{
+      $('.li-list-to').css('top',Top - 130)
+    }
+    $('.li-list-to').addClass('show')
+    e.stopPropagation()
   })
 }
 
 // 配置菜单
-let uinav = $('<ul class="li-nav-ui"></ul>')
-for(let i in Menu){
-  let liitem =`<li class="li-nav-item bgBox">
-    <a class="" href="javascript:;">`+ Menu[i].title +`</a>
-    <i class="layui-icon li-edit-icon layui-icon-more-vertical"></i>
-  </li>`
-  uinav.append(liitem)
+function readyMenu(){
+  let uinav = $('<ul class="li-nav-ui"></ul>')
+  console.log(Menu)
+  for(let i in Menu){
+    let liitem =`<li class="li-nav-item bgBox">
+      <a class="" href="javascript:;">`+ Menu[i].title +`</a>
+      <i class="layui-icon li-edit-icon layui-icon-more-vertical"></i>
+    </li>`
+    uinav.append(liitem)
+  }
+  console.log(uinav)
+  $('.layui-side-scroll').html(uinav)
+  setEdit()
 }
-$('.layui-side-scroll').append(uinav)
 
+// 异步更新菜单
+function setMenu(){
+  getMenu().then((data)=>{
+    readyMenu()
+  })
+}
 
 // 右下角通知
 const Ealert = (title="Title",text="Undefined",back=null)=>{
@@ -27,30 +66,17 @@ const Ealert = (title="Title",text="Undefined",back=null)=>{
     () => back
 }
 
+const SetHtml = ()=>{
+  let file = $('.bodyHtml').attr("file")
+  $('.bodyHtml').load(file)
+}
+
+//执行
+setMenu()
+SetHtml()
 
 
-// let nav = $(`<ul class="layui-nav layui-nav-tree" lay-filter="test"></ul>`)
-// for(let i in Mneu){
-//     let event = $(`<li class="layui-nav-item layui-nav-itemed">
-//         <a class="" href="javascript:;">`+ Mneu[i].title + `</a>
-//     </li>`)
-
-//     if(Mneu[i].child?.length){
-//         let Child = Mneu[i].child
-//         let Dlevent = $(`<dl class="layui-nav-child"></dl>`)
-//         for(let i in Child){
-//             let Cevent = `<dd><a href="javascript:;">`+ Child[i].title +`</a></dd>`
-//             Dlevent.append(Cevent)
-//         }
-//         event.append(Dlevent)
-//     }
-//     nav.append(event)
-// }
-// console.log(nav[0])
-// $('.layui-side-scroll').append(nav)
-
-
-//点击菜单展示
+//点击展开菜单
 $('.menuIcon').click((e)=>{
   $('.layui-plus-menu').toggleClass('hideMneu')
   $('.layui-body').toggleClass('hideBody')
@@ -60,29 +86,54 @@ $('.menuIcon').click((e)=>{
     $('.li-indent').removeClass('layui-icon-next').addClass('layui-icon-prev')
   }
 })
-
-//点击菜单，展开隐藏菜单
-$('.li-nav-item a').click((e)=>{
-  $(e.target).parent('.li-nav-item').find('.li-nav-child').toggleClass('show')
-})
-//点击设置，打开设置弹窗
-$('.li-edit-icon').click((e)=>{
-  let Top = $(e.target).parent('.li-nav-item').offset().top
-  if(Top < $('body').height()/2){
-    $('.li-list-to').css('top',Top + 40)
-  }else{
-    $('.li-list-to').css('top',Top - 130)
-  }
-  $('.li-list-to').addClass('show')
-  e.stopPropagation()
-})
-//点击页面，关闭设置弹窗
+//点击关闭展开
 $('body').click(()=>{
   $('.li-list-to').removeClass('show')
 })
-//动态设置元素节点
+
+// //点击菜单，展开隐藏菜单
+// $('.li-nav-item a').click((e)=>{
+//   $(e.target).parent('.li-nav-item').find('.li-nav-child').toggleClass('show')
+// })
+
+
+// 创建新文件夹功能
+$('body').on("click","#create",(e)=>{
+  let index = layer.open({
+    type: 1, // page 层类型
+    area: ['500px', '200px'],
+    title: '创建新文件夹',
+    shade: 0.6, // 遮罩透明度
+    shadeClose: true, // 点击遮罩区域，关闭弹层
+    // maxmin: true, // 允许全屏最小化
+    anim: 0, // 0-6 的动画形式，-1 不开启
+    content: `<div style="padding:25px 40px;">
+      <input type="text" name="" placeholder="请输入文件夹名称" class="layui-input nameInput">
+      <div class="layui-footer">
+        <button class="layui-btn layui-btn-primary layui-border close">取消</button>
+        <button type="button" class="layui-btn submit">确定</button>
+      </div>
+    </div>`
+  });
+  $('.close').click(()=>{
+    layer.close(index);
+  })
+  $('.submit').click(()=>{
+    let title = $('.nameInput').val().trim()
+    if(title){
+      let id = new Date().getTime()
+      let Obj ={id,title}
+      Menu.push(Obj)
+      electron.ipcRenderer.setStoreValue('menu',Menu)
+      readyMenu()
+      layer.close(index);
+    }
+  })
+})
+
+
+//统一动态设置元素节点
 $(".include").each(function() {
-  console.log(111)
   if (!!$(this).attr("file")) {
       var $includeObj = $(this);
       $(this).load($(this).attr("file"), function(html) {
@@ -91,7 +142,9 @@ $(".include").each(function() {
   }
 });
 
+//右下角清除
 $(".seting.button").click(()=>{
   electron.ipcRenderer.clearStorae()
+  setMenu()
   Ealert('通知',"数据已全部清除！")
 })
