@@ -1,29 +1,99 @@
-<div>
-    <blockquote class="layui-elem-quote layui-text">
-    备忘录
-    </blockquote>
-
+<div style="margin:10px;">
     <div class="_layui-row">
-        <div class="layui-col-xs12 layui-col-sm6 layui-col-md4 layui-col-lg3 layui-col-xl2">
-          <div class="grid-demo">xs:6/12 | sm:6/12 | md:4/12</div>
+        <div class="search">
+            <div class="layui-col-xs12 layui-col-sm4">
+                <input type="text" name="bookName" placeholder="书名" class="layui-input">
+            </div>
+            <div class="layui-col-xs12 layui-col-sm4">
+                <input type="text" name="author" placeholder="作者" class="layui-input">
+            </div>
+            <div class="layui-col-xs12 layui-col-sm4">
+                <input type="text" name="press" placeholder="出版社" class="layui-input">
+            </div>
+            <div class="layui-col-xs12 layui-col-sm4">
+                <input type="text" name="ext" placeholder="扩展名" class="layui-input">
+            </div>
+            <div class="layui-col-xs12 layui-col-sm4">
+                <input type="text" name="language" placeholder="语言" class="layui-input">
+            </div>
+            <div class="layui-col-xs12 layui-col-sm4">
+                <input type="text" name="isbn" placeholder="ISBN" class="layui-input">
+            </div>
         </div>
-        <div class="layui-col-xs12 layui-col-sm6 layui-col-md4 layui-col-lg3 layui-col-xl2">
-            <div class="grid-demo">xs:6/12 | sm:6/12 | md:4/12</div>
+        <div class="_layui-list">
+            <table class="layui-hide" id="ID-table-demo-data"></table>
         </div>
-        <div class="layui-col-xs12 layui-col-sm6 layui-col-md4 layui-col-lg3 layui-col-xl2">
-            <div class="grid-demo">xs:6/12 | sm:6/12 | md:4/12</div>
-        </div>
-        <div class="layui-col-xs12 layui-col-sm6 layui-col-md4 layui-col-lg3 layui-col-xl2">
-            <div class="grid-demo">xs:6/12 | sm:6/12 | md:4/12</div>
-        </div>
-        <div class="layui-col-xs12 layui-col-sm6 layui-col-md4 layui-col-lg3 layui-col-xl2">
-            <div class="grid-demo">xs:6/12 | sm:6/12 | md:4/12</div>
-        </div>
-        <div class="layui-col-xs12 layui-col-sm6 layui-col-md4 layui-col-lg3 layui-col-xl2">
-            <div class="grid-demo">xs:6/12 | sm:6/12 | md:4/12</div>
-        </div>
-      </div>
+    
+        <div id="demo-laypage-normal-2"></div>
+    </div>
 </div>
+
+<script>
+layui.use(function(){
+
+  //设置分页
+  const setCount=(num=10)=>{
+    var laypage = layui.laypage;
+    laypage.render({
+        elem: 'demo-laypage-normal-2',
+        limit: 20,
+        count: num
+    });
+  }
+  setCount()
+
+  //设置table
+  const setTable=(data=[])=>{
+    console.log($(window).innerWidth())
+    var table = layui.table;
+    var inst = table.render({
+        elem: '#ID-table-demo-data',
+        cols: [[ //标题栏
+            // {field: 'id', title: 'ID', width: 80, sort: true},
+            {field: 'title', title: '书名', minWidth: 180},
+            {field: 'author', title: '作者', minWidth: 150},
+            {field: 'publisher', title: '出版社', minWidth: 150},
+            {field: 'year', title: '时间', minWidth: 80, sort: true},
+            {field: 'extension', title: '扩展名', minWidth: 80},
+            {field: 'filesize', title: '大小', minWidth: 80, sort: true},
+            {field: 'pages', title: '页数', minWidth: 80},
+            {field: 'language', title: '语言', minWidth: 80,}
+        ]],
+        data: data,
+        //skin: 'line', // 表格风格
+        //even: true,
+        height: 'calc(100% - 20px)',
+        page: false,
+    });
+  }
+
+  $("input[name='bookName']").blur((e)=>{
+        let val = e.target.value
+        if(val){
+            $.ajax('https://zbook.lol/search', {
+                method: 'GET',
+                data: {
+                    title: val,
+                    limit: 20,
+                    offset:0
+                },
+                success:function (result) {
+                    setCount(result.total)
+                    setTable(result.books)
+                    console.log(result);
+                },
+                error:function (err) {
+                    console.log(err);
+                }
+            })
+
+        }
+    })
+
+
+});
+
+</script>
 
 <style>
 ._card-box{
@@ -40,12 +110,12 @@
     font-size: 20px;
 }
 ._layui-row{
-    margin: 0 -10px;
-    height: calc(100vh - 105px);
+    margin: 0 -5px;
     overflow: auto;
 }
-._layui-row>div{
-    padding: 10px;
+.search{overflow: hidden;}
+.search>div{
+    padding: 5px;
 }
 ._layui-row .grid-demo{
     border: 1px solid #ccc;
@@ -53,8 +123,20 @@
     border-radius: 10px;
     height: 200px;
 }
+._layui-list{
+    height: calc(100% - 136px);
+    padding: 0 5px;
+}
+@media screen and (max-width: 768px) {
+    ._layui-list{
+        height: calc(100% - 325px);
+    }
+}
+.layui-laypage{
+    margin: 0;
+    overflow: hidden;
+}
+#demo-laypage-normal-2{
+    position: fixed;
+}
 </style>
-
-<script>
-    console.log(321)
-</script>
