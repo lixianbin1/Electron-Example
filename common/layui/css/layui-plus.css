@@ -182,7 +182,8 @@
     padding: 0 15px;
     position: relative;
     text-overflow: ellipsis;
-    overflow: hidden;
+    overflow: hidden;0
+    
     white-space: nowrap;
 }
 .li-nav-item{
