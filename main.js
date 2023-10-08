@@ -27,6 +27,8 @@ const createWindow = () => {
   const win = new BrowserWindow({
     width: 1366,
     height: 768,
+    minWidth:1000,
+    minHeight:600,
     resizable: true,
     show:false,
     backgroundColor: '#fff',

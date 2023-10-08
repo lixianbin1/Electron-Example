@@ -28,6 +28,15 @@
     </div>
 </div>
 
+<script type="text/html" id="barDemo">
+    <div class="layui-clear-space">
+        <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+        <a class="layui-btn layui-btn-xs down" lay-event="down">下载
+            <i class="layui-icon layui-icon-down"></i>
+        </a>
+    </div>
+</script> 
+
 <script>
 layui.use(function(){
 
@@ -56,15 +65,26 @@ layui.use(function(){
             {field: 'year', title: '时间', minWidth: 80, sort: true},
             {field: 'extension', title: '扩展名', minWidth: 80},
             {field: 'filesize', title: '大小', minWidth: 80, sort: true},
-            {field: 'pages', title: '页数', minWidth: 80},
-            {field: 'language', title: '语言', minWidth: 80,}
+            {field: 'language', title: '语言', minWidth: 80,},
+            {fixed: 'right', title:'操作', width: 80, toolbar: '#barDemo'}
         ]],
         data: data,
         //skin: 'line', // 表格风格
         //even: true,
-        height: 'calc(100% - 20px)',
         page: false,
     });
+
+    // 单元格编辑事件
+    table.on('down(test)', function(obj){
+        console.log(obj)
+    });
+    table.on('tool(test)', function(obj){ // 双击 toolDouble
+        var data = obj.data; // 获得当前行数据
+        console.log(obj)
+        if(obj.event === 'down'){
+            console.log(obj)
+        }
+    })
   }
 
   $("input[name='bookName']").blur((e)=>{
@@ -91,6 +111,8 @@ layui.use(function(){
     })
 
 
+
+
 });
 
 </script>
@@ -111,7 +133,6 @@ layui.use(function(){
 }
 ._layui-row{
     margin: 0 -5px;
-    overflow: auto;
 }
 .search{overflow: hidden;}
 .search>div{
@@ -124,13 +145,8 @@ layui.use(function(){
     height: 200px;
 }
 ._layui-list{
-    height: calc(100% - 136px);
+    height: calc(100% - 160px);
     padding: 0 5px;
-}
-@media screen and (max-width: 768px) {
-    ._layui-list{
-        height: calc(100% - 325px);
-    }
 }
 .layui-laypage{
     margin: 0;
@@ -138,5 +154,18 @@ layui.use(function(){
 }
 #demo-laypage-normal-2{
     position: fixed;
+    bottom: 5px;
+    left: 10px;
+}
+.layui-table-body{
+    height: calc(100% - 40px);
+}
+@media screen and (max-width: 768px) {
+    ._layui-list{
+        height: calc(100% - 345px);
+    }
+    /* .layui-table-body{
+        height: calc(100% - 45px);
+    } */
 }
 </style>
