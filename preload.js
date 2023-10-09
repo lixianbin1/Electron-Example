@@ -22,3 +22,9 @@ const electronHandler = {
   }
 }
 contextBridge.exposeInMainWorld('electron', electronHandler);
+
+
+// 暴露下载
+contextBridge.exposeInMainWorld('downFile', {
+  file: (url,fileName) => ipcRenderer.send("downFile",url,fileName)
+});
