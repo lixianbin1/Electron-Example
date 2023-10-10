@@ -79,7 +79,7 @@ SetHtml()
 //点击展开菜单
 $('.menuIcon').click((e)=>{
   $('.layui-plus-menu').toggleClass('hideMneu')
-  $('.layui-body').toggleClass('hideBody')
+  $('.layui-plus-body').toggleClass('hideBody')
   if($('.layui-plus-menu').hasClass('hideMneu')){
     $('.li-indent').addClass('layui-icon-next').removeClass('layui-icon-prev')
   }else{
