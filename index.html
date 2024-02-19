@@ -1,46 +1,33 @@
-<html>
+<!DOCTYPE html>
+<html lang="zh">
   <head>
     <meta charset="UTF-8">
-    <meta content="text/html; charset=utf-8" http-equiv="content-type">
-    <title>Electron Example (0.1.0)</title>
-    <link href="./common/layui/css/layui.css" rel="stylesheet">
-    <link href="./common/layui/css/layui-plus.css" rel="stylesheet">
-    <script src="./common/layui/layui.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>战争策略游戏</title>
+    <link href="./common/layui/css/index.css" rel="stylesheet">
     <script src="./common/jquery-3.7.1.min.js"></script>
   </head>
-  <body id="li">
-    <div class="layui-layout layui-layout-admin">
-      <!-- 左侧Menu -->
-      <div class="layui-plus-menu layui-bg-black">
-        <!-- 左侧缩进定位 -->
-        <div class="menuIcon bgBox">
-          <h1>Electron Example</h1>
-          <span>v0.1.0</span>
-          <i class="layui-icon li-indent layui-icon-prev icon"></i> 
-        </div>
-        <!--搜索模块-->
-        <div class="layui-menu-search bgBox">
-          <input type="text" class="search-input" placeholder="Search Music" />
-        </div>
-        <!-- 左侧导航区域 -->
-        <div class="layui-side">
-          <div class="layui-side-scroll"></div>
-        </div>
-        <div class="layui-side-seting bgBox">
-          <div class="seting button">
-            <i class="layui-icon layui-icon-set icon"></i>
-            <span style="margin-left: 5px;">Settings</span> 
-          </div>
-        </div>
-      </div>
-      <!-- 内容主体区域 -->
-      <div class="layui-plus-body">
-        <div class="bodyHtml" file="./Pages/Home/index.html"></div>
-      </div>
+  <body >
+    <!-- 开始界面 -->
+    <div id="start">
+      <h1>2</h1>
+      <button class="menu-button" onclick="startGame()">1</button>
+      <button class="menu-button" onclick="continueGame()">2</button>
+      <button class="menu-button" onclick="exitGame()">3</button>
     </div>
-    <!--菜单工具-->
-    <div class="include" file="./component/CreateToolbox.html"></div>
-    <div id="load"></div>
-    <script src="./Pages/index.js"></script>
+
+    <!-- 加载界面 -->
+    <div id="loading-screen" style="display: none;">
+      <div id="loading-animation"></div>
+      <div id="loading-text">世界正在生成中...</div>
+    </div>
+
+    <!-- 游戏界面 -->
+    <div id="game-content" style="display: none;">
+      <p>553232132131</p>
+    </div>
+    <script src="./common/loading.js"></script>
+    <script src="./common/initialize.js"></script>
+    <script src="./index.js"></script>
   </body>
 </html>

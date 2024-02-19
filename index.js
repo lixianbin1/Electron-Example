@@ -1,5 +1,12 @@
-console.log(layui)
-layui.use(function(){
-  var layer = layui.layer;
-  layer.msg('Hello World', {icon: 6});
-});
+const startGame=()=>{
+    console.log('开始游戏')
+    LoadingStart()
+    setInterval(updateLoadingMessage,2000);
+    initializeGame().then((data)=>{
+        console.log(data)
+    }).catch((err)=>{
+        console.log(err)
+    }).finally(()=>{
+        LoadingEnd()
+    })
+}
