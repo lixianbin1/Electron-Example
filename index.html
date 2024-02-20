@@ -3,9 +3,14 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>战争策略游戏</title>
-    <link href="./common/layui/css/index.css" rel="stylesheet">
+    <title>策略游戏</title>
+    <link href="./common/style/index.css" rel="stylesheet">
     <script src="./common/jquery-3.7.1.min.js"></script>
+    <script src="./common/Map/three.min.js"></script>
+    <script src="./common/Map/OBJLoader.js"></script>
+    <script src="./common/Map/DDSLoader.js"></script>
+    <script src="./common/Map/MTLLoader.js"></script>
+    <script src="./common/Map/OrbitControls2.js"></script>
   </head>
   <body >
     <!-- 开始界面 -->
@@ -24,9 +29,29 @@
 
     <!-- 游戏界面 -->
     <div id="game-content" style="display: none;">
-      <p>553232132131</p>
+      <div id="resources">
+        <div class="resource"><strong>铁:</strong> <span id="iron">0</span></div>
+        <div class="resource"><strong>木:</strong> <span id="wood">0</span></div>
+        <div class="resource"><strong>石:</strong> <span id="stone">0</span></div>
+        <div class="resource"><strong>粮:</strong> <span id="food">0</span></div>
+        <div class="resource"><strong>铜:</strong> <span id="copper">0</span></div>
+        <div class="resource"><strong>声望:</strong> <span id="prestige">0</span></div>
+        <div class="resource"><strong>时间:</strong> <span id="time">00:00</span></div>
+        <div class="resource"><strong>坐标:</strong> <span id="coordinates">0, 0</span></div>
+      </div>
+      <div id="map">
+        <!-- 大地图内容 -->
+      </div>
+      <div id="controls">
+        <div class="control" onclick="showGenerals()">武将</div>
+        <div class="control" onclick="showTactics()">战法</div>
+        <div class="control" onclick="showInternal()">内政</div>
+        <div class="control" id="resetButton">城池</div>
+        <div class="control" onclick="showRecruitment()">招募</div>
+      </div>
     </div>
     <script src="./common/loading.js"></script>
+    <script src="./common/Map/initMap.js"></script>
     <script src="./common/initialize.js"></script>
     <script src="./index.js"></script>
   </body>

@@ -1,4 +1,5 @@
-body{margin:0}
+*{margin:0;border:0;}
+canvas { width: 100%; height: 100%;vertical-align:bottom}
 /*start*/
 #start{
     display: flex;
@@ -8,6 +9,9 @@ body{margin:0}
     width: 100%;
     height: 100vh;
     margin: 0;
+    z-index: 999;
+    position: fixed;
+    background: #fff;
 }
 #start .menu-button {
     display: block;
@@ -36,6 +40,9 @@ body{margin:0}
     align-items: center;
     position: fixed;
     top: 0;
+    z-index: 998;
+    position: fixed;
+    background: #fff;
 }
 /*game*/
 #game-content{
@@ -43,4 +50,25 @@ body{margin:0}
     height: 100vh;
     position: fixed;
     top: 0; 
+    display: flex;
+    flex-direction: column;
 }
+#resources { 
+    background-color: #f8f9fa; text-align: center; 
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+}
+#map { 
+    width: 100%; flex:1; background-color: #ddd;
+}
+#controls { 
+    background-color: #f8f9fa; padding: 10px; text-align: center; 
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+}
+.resource { display: inline-block; margin: 0 15px; }
+.control { display: inline-block; margin: 0 10px; cursor: pointer; }
