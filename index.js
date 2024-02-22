@@ -12,6 +12,4 @@ const startGame=()=>{
         //关闭加载界面
         LoadingEnd()
     })
-
-
 }

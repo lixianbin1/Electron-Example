@@ -1,6 +1,6 @@
 module.exports = {
   packagerConfig: {
-    asar: true,
+    asar: false, // 修改为 false
   },
   rebuildConfig: {},
   makers: [

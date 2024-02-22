@@ -75,36 +75,36 @@ const installMap=(Length=5,BoxSize=12)=>{
     //渲染
     renderer.render( scene, camera );
 
-    var texture = new THREE.TextureLoader().load( "./common/Map/imgs/a1.png" );
+    var texture = new THREE.TextureLoader().load( "static/Map/imgs/a1.png" );
     texture.wrapS = THREE.RepeatWrapping;
     texture.wrapT = THREE.RepeatWrapping;
     texture.repeat.set( 4, 4 );
 
     //导入模型
     var mtlLoader = new THREE.MTLLoader()
-    var objLoader=new THREE.OBJLoader()
-    mtlLoader.setPath('./common/Map/obj/')
+    var objLoader = new THREE.OBJLoader()
+    mtlLoader.setPath('static/Map/obj/')
     mtlLoader.load('room1.mtl',function(materials){
         materials.preload();
         objLoader.setMaterials(materials)
-        objLoader.setPath('./common/Map/obj/')
-        objLoader.load('room1.obj',function(object){
-            object.traverse(function(child) {
-                if(child instanceof THREE.Mesh) {
-                child.material.transparent=true;
-                child.receiveShadow = true;//接收阴影
-                child.castShadow = true;
-                child.material.map = texture;
-                }
-            })
-            object.position.set(-6,-6,6)
-            object.transparent=true;
-            object.opacity=0.5
-            scene.add(object);
-            renderer.render(scene,camera);
-        },undefined,function(error){
-            console.log(error)
-        });
+    });
+    objLoader.setPath('static/Map/obj/')
+    objLoader.load('room1.obj',function(object){
+        object.traverse(function(child) {
+            if(child instanceof THREE.Mesh) {
+            child.material.transparent=true;
+            child.receiveShadow = true;//接收阴影
+            child.castShadow = true;
+            child.material.map = texture;
+            }
+        })
+        object.position.set(-6,-6,6)
+        object.transparent=true;
+        object.opacity=0.5
+        scene.add(object);
+        renderer.render(scene,camera);
+    },undefined,function(error){
+        console.log(error)
     });
 
     //网格
