@@ -1,14 +1,16 @@
-const installMap=()=>{
+//初始化地图 Length:半径长度; size:格子大小
+const installMap=(Length=5,BoxSize=12)=>{
     try{
     //创建一个场景
     var scene = new THREE.Scene();
     scene.background = new THREE.Color( 0xa0a0a0 );
-    scene.fog = new THREE.Fog( 0xa0a0a0, 80, 120 );
+    // scene.fog = new THREE.Fog( 0xa0a0a0, 80, 120 );
 
 
     //创建一个摄像机 属性:(视野,宽高比,近剪裁平面和远剪裁平面)
     var camera = new THREE.PerspectiveCamera( 45, window.innerWidth/window.innerHeight, 1, 1000 );
     camera.position.set( -10, 20, 10 );
+    camera.up = new THREE.Vector3(0, 1, 0);
     camera.lookAt( 0, 0, 0 );
                 
 
@@ -24,19 +26,22 @@ const installMap=()=>{
     
     document.getElementById('map').appendChild( renderer.domElement );
 
-    //辅助对象 三维箭头 红x 绿y 蓝z 
-    var axesHelper = new THREE.AxesHelper( 80 );
-    scene.add( axesHelper );
+    // //辅助对象 三维箭头 红x 绿y 蓝z 
+    // var axesHelper = new THREE.AxesHelper( 80 );
+    // scene.add( axesHelper );
+    // //阴影助手
+    // var helper = new THREE.CameraHelper( light.shadow.camera );
+    // scene.add( helper );
 
     //地图系统
     var maps=[]
-    map(0,0)
+    map()
     console.log(maps)
-    function map(x,y){
-        for(let i=-2;i<=2;i++){
-            for(let k=-2;k<=2;k++){
+    function map(){
+        for(let i=-Length;i<=Length;i++){
+            for(let k=-Length;k<=Length;k++){
                 let has=true//判断是否在坐标中存在
-                let xy=(i+x)+','+(k+y)
+                let xy=i + ',' + k
                 for(let j in maps){
                     if(maps[j]==xy){
                         has=false
@@ -45,7 +50,7 @@ const installMap=()=>{
                 }
                 if(has){
                     maps.push(xy)
-                    iniPlane(12*(i+x),0,12*(k+y))
+                    iniPlane(BoxSize*(i),0,BoxSize*(k))
                 }
             }
         }
@@ -66,13 +71,9 @@ const installMap=()=>{
         light.shadow.mapSize.width = 1512;
         light.shadow.mapSize.height = 1512;
         scene.add( light );
-    //阴影助手
-    var helper = new THREE.CameraHelper( light.shadow.camera );
-        scene.add( helper );
 
     //渲染
     renderer.render( scene, camera );
-
 
     var texture = new THREE.TextureLoader().load( "./common/Map/imgs/a1.png" );
     texture.wrapS = THREE.RepeatWrapping;
@@ -109,7 +110,7 @@ const installMap=()=>{
     //网格
     function iniPlane(x,y,z) {
         //地板
-        var planeGeo = new THREE.PlaneGeometry(12, 12);
+        var planeGeo = new THREE.PlaneGeometry(BoxSize, BoxSize);
         var planeMat = new THREE.MeshLambertMaterial({color:0xf1f1f1,side:THREE.DoubleSide});
         var plane = new THREE.Mesh(planeGeo,planeMat);
         plane.receiveShadow = true;//接收阴影
@@ -118,7 +119,7 @@ const installMap=()=>{
         plane.position.y = -0.01;//下沉0.01
         plane.rotation.x = 0.5 * Math.PI;//翻转90度
         //网格的对象 
-        var grid = new THREE.GridHelper(12, 1, 0x000000, 0x000000);
+        var grid = new THREE.GridHelper(BoxSize, 1, 0x000000, 0x000000);
         grid.material.transparent = true;//允许透明
         grid.material.opacity = 0.1;
         grid.position.set(x,y,z)
@@ -127,106 +128,127 @@ const installMap=()=>{
         scene.add(grid);
     }
 
+    document.addEventListener('click', onMapClick);
+    // 点击地图格子时触发的操作
+    // 创建一个变量来跟踪当前发光的格子
+    let currentGlowingObject = null;
+    function onMapClick(event) {
+        // 获取鼠标点击位置的坐标
+        const mouse = new THREE.Vector2();
+        mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+        mouse.y = - (event.clientY / window.innerHeight) * 2 + 1;
+
+        // 创建一个射线
+        const raycaster = new THREE.Raycaster();
+        raycaster.setFromCamera(mouse, camera);
+
+        // 检测射线与地图格子的交点
+        const intersects = raycaster.intersectObjects(scene.children);
+
+        if (intersects.length > 0) {
+            const intersectedObject = intersects[0].object;
+            // 检查材质是否存在
+            if (intersectedObject.material.emissive) {
+                // 如果之前有发光的格子，停止发光
+                if (currentGlowingObject) {
+                    currentGlowingObject.material.emissive.set(0x000000); // 停止发光
+                }
+                // 设置边缘微光效果
+                const edgeGlowColor = 0x00ff00; // 绿色
+                intersectedObject.material.emissive.set(edgeGlowColor);
+                intersectedObject.material.emissiveIntensity = 0.1; // 微光强度
+
+                // 更新当前发光的格子
+                currentGlowingObject = intersectedObject;
+
+                // 获取格子的坐标
+                const gridPosition = intersectedObject.position;
+                console.log('Clicked grid position:', gridPosition);
+            }
+        }
+    }
+
+    const BoxAnimate=()=>{
+        if (currentGlowingObject) {
+            // 呼吸灯效果：改变发光强度
+            const time = Date.now() * 0.001; // 根据时间计算强度
+            const breathSpeed = 2; // 调整呼吸灯的速度，较小的值表示更快的变化
+            const glowIntensity = 0.5 + 0.5 * Math.sin(time * breathSpeed); // 呼吸灯效果
+            currentGlowingObject.material.emissiveIntensity = glowIntensity;
+        }
+    }
+
+
     //轨道控制相机
     var controls = new THREE.OrbitControls( camera,document.getElementById('map')); //设置正确的绑定对象
         controls.enableDamping = true
         controls.dampingFactor=0.15
-        controls.minPolarAngle= Math.PI/8;
-        controls.maxPolarAngle= Math.PI/3;
+        controls.target=new THREE.Vector3(0,0,0);
+        //禁止滚动
+        controls.minPolarAngle= Math.PI/4;
+        controls.maxPolarAngle= Math.PI/4;
+        //禁止旋转
+        controls.enableRotate = false
+        controls.minAzimuthAngle = - Math.PI/4;
+        controls.maxAzimuthAngle = - Math.PI/4;
+        //禁止上下
+        controls.minDistance=80
+        controls.maxDistance=80
         controls.panSpeed=0.1
         controls.rotateSpeed=0.05
         controls.maxZoom=10
-        controls.minDistance=50
-        controls.maxDistance=80
         controls.update();
 
-        // // 定义边界
-        // var bounds = {
-        //     minX: -40,
-        //     maxX: 40,
-        //     minZ: -40,
-        //     maxZ: 40
-        // };
-        // // 添加事件监听器来限制摄像头位置
-        // controls.addEventListener('change', function() {
-        //     console.log(camera.position.x,camera.position.y,camera.position.z)
-        //     console.log(camera.position.x/camera.position.y)
-        //     // 检查X轴边界
-        //     if (camera.position.x < bounds.minX) {
-        //         camera.position.x = bounds.minX;
-        //         camera.position.y = bounds.minX/-0.52
-        //         camera.position.z = bounds.minX/-1
-        //     } else if (camera.position.x > bounds.maxX) {
-        //         camera.position.x = bounds.maxX;
-        //         camera.position.y = bounds.maxX/-1
-        //         camera.position.z = bounds.maxX/-0.52
-        //     }
-            
-        //     // 检查Y轴边界
-        //     if (camera.position.z < bounds.minZ) {
-        //         camera.position.z = bounds.minZ;
-        //         camera.position.y = -0.52*bounds.minZ;
-        //         camera.position.x = - bounds.minZ;
-        //     } else if (camera.position.z > bounds.maxZ) {
-        //         camera.position.z = bounds.maxZ;
-        //         camera.position.y = -0.52*bounds.maxZ;
-        //         camera.position.x = - bounds.maxZ;
-        //     }
-        // });
+        // 定义摄像头边界
+        var bounds = {
+            minX: - (Length * BoxSize) - 25,
+            maxX: (Length * BoxSize) - 50,
+            minZ: - (Length * BoxSize) + 50,
+            maxZ: (Length * BoxSize) + 25
+        };
+        //添加事件监听器来限制摄像头位置
+        controls.addEventListener('change', function() {
+            // 检查X轴边界
+            if (camera.position.x < bounds.minX ){
+                camera.position.x = bounds.minX
+            }else if(camera.position.x > bounds.maxX){
+                camera.position.x = bounds.maxX
+            }
+            // 检查Y轴边界
+            if (camera.position.z < bounds.minZ){
+                camera.position.z = bounds.minZ
+            }else if(camera.position.z > bounds.maxZ){
+                camera.position.z = bounds.maxZ
+            }
+        });
 
+        // 监听窗口大小变化事件
+        window.addEventListener('resize', onWindowResize);
+        function onWindowResize() {
+            const newWidth = window.innerWidth;
+            const newHeight = window.innerHeight;
+            // 更新渲染器的画布大小
+            renderer.setSize(newWidth, newHeight);
+            // 更新相机的视角和长宽比
+            camera.aspect = newWidth / newHeight;
+            camera.updateProjectionMatrix();
+        }
 
         (function animate() {
+            onWindowResize()
             requestAnimationFrame( animate );
-
-            //创建新地块
-            // var target=controls.target
-            // let tarX,tarY
-            // if(Math.abs(target.x-0)>12){
-            //     if(target.x>0){
-            //         tarX=Math.ceil((target.x-12)/24)
-            //     }else{
-            //         tarX=Math.floor((target.x+12)/24)
-            //     }
-            // }else{
-            //     tarX=0
-            // }
-            // if(Math.abs(target.z-0)>12){
-            //     if(target.z>0){
-            //         tarY=Math.ceil((target.z-12)/24)
-            //     }else{
-            //         tarY=Math.floor((target.z+12)/24)
-            //     }
-            // }else{
-            //     tarY=0
-            // }
-            // console.log(tarX,tarY) //中心坐标
-            // map(tarX,tarY) //根据摄像头移动，创建新地块
             controls.update();
+            BoxAnimate()
             renderer.render( scene, camera );
         })()
-
-
-        //注册事件
-        var originalPosition = new THREE.Vector3(0, 0, 0); // 根据需要调整
-        var originalRotation = new THREE.Euler(0, 0, 0); // 根据需要调整
-        $('#resetButton').click(function() {
-            camera.position.copy(originalPosition);
-            camera.rotation.copy(originalRotation);
-            // 如果你使用了OrbitControls，你可能还需要重置控制器的目标
-            if (controls) {
-                controls.target.set(0, 0, 0);
-                controls.update();
-            }
-            // 重新渲染场景
-            renderer.render(scene, camera);
-        });
 
         return new Promise((resolve)=>{
             resolve()
         })
     }catch(err){
+        console.log(err)
         return new Promise((reject)=>{
-            reject()
+            reject(err)
         })
     }
 }

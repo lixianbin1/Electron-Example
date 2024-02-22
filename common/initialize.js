@@ -17,7 +17,9 @@ const initializeGame =async function(){
             weather: 'clear' // 当前的天气
         };
         //初始化地图
-        await installMap()
+        console.log('初始化地图')
+        const map = await installMap(10)
+        console.log(map)
         // 随机生成主角的出生坐标
         const playerPosition = {
             x: Math.floor(Math.random() * gameInfo.worldSize.width),

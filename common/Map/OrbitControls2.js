@@ -26,13 +26,11 @@ THREE.OrbitControls = function ( object, domElement ) {
 	this.minPolarAngle = 0; // radians
 	this.maxPolarAngle = Math.PI; // radians
 
-	// How far you can orbit horizontally, upper and lower limits.
-	// If set, must be a sub-interval of the interval [ - Math.PI, Math.PI ].
+	// 旋转角度
 	this.minAzimuthAngle = - Infinity; // radians
 	this.maxAzimuthAngle = Infinity; // radians
 
-	// Set to true to enable damping (inertia)
-	// If damping is enabled, you must call controls.update() in your animation loop
+	// 阻尼感
 	this.enableDamping = false;
 	this.dampingFactor = 0.25;
 
@@ -42,30 +40,30 @@ THREE.OrbitControls = function ( object, domElement ) {
 	this.zoomSpeed = 1.0;
 
 	//设置为false可禁用旋转
-	this.enableRotate = false;
+	this.enableRotate = true;
 	this.rotateSpeed = 1.0;
 
-	// Set to false to disable panning
+	//设置为false可禁用平移
 	this.enablePan = true;
 	this.panSpeed = 1.0;
-	this.screenSpacePanning = false; // if true, pan in screen-space
-	this.keyPanSpeed = 7.0;	// pixels moved per arrow key push
+	this.screenSpacePanning = false; //如果为true，则在屏幕空间平移
+	this.keyPanSpeed = 7.0;	//按箭头键移动的像素数
 
-	// Set to true to automatically rotate around the target
-	// If auto-rotate is enabled, you must call controls.update() in your animation loop
+	//设置为true可自动围绕目标旋转
+	//如果启用了“自动旋转”，则必须在动画循环中调用controls.update（）
 	this.autoRotate = false;
 	this.autoRotateSpeed = 2.0; // 30 seconds per round when fps is 60
 
-	// Set to false to disable use of the keys
+	//设置为false以禁用按钮的使用
 	this.enableKeys = true;
 
-	// The four arrow keys
+	//四个方向键
 	this.keys = { LEFT: 37, UP: 38, RIGHT: 39, BOTTOM: 40 };
 
-	// Mouse buttons
+	//鼠标按钮
 	this.mouseButtons = { LEFT: THREE.MOUSE.LEFT, MIDDLE: THREE.MOUSE.MIDDLE, RIGHT: THREE.MOUSE.RIGHT };
 
-	// for reset
+	//用于重置
 	this.target0 = this.target.clone();
 	this.position0 = this.object.position.clone();
 	this.zoom0 = this.object.zoom;
