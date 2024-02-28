@@ -95,7 +95,7 @@ const installMap=(Length=5,BoxSize=12)=>{
                     let randomResource = resources[Math.floor(Math.random() * resources.length)];
                     let randomLevel = levels[Math.floor(Math.random() * levels.length)];
                     maps[xy] = { resource: randomResource, level: randomLevel }; 
-                    iniPlane(BoxSize*(i),0,BoxSize*(k),materials[randomResource][randomLevel-1])
+                    iniPlane(BoxSize*(i),0,BoxSize*(k)/*,materials[randomResource][randomLevel-1]*/)
                 }
             }
             //随机分配势力
@@ -114,7 +114,8 @@ const installMap=(Length=5,BoxSize=12)=>{
         map()
         console.log(maps)
         //创建地图网格
-        function iniPlane(x,y,z,material) {
+        function iniPlane(x,y,z,material=new THREE.MeshToonMaterial({color:0xf1f1f1,side:THREE.DoubleSide})) {
+
             //地板的对象
             var planeGeo = new THREE.PlaneGeometry(BoxSize, BoxSize);
             // var planeMat = new THREE.MeshLambertMaterial({color:0xf1f1f1,side:THREE.DoubleSide});
@@ -230,8 +231,10 @@ const installMap=(Length=5,BoxSize=12)=>{
 
         document.addEventListener('click', onMapClick);
         // 点击地图格子时触发的操作
-        // 创建一个变量来跟踪当前发光的格子
-        let currentGlowingObject = null;
+        // 创建一个点光源
+        const pointLight = new THREE.PointLight(0x00ff00, 1, 10); // 绿色，强度为1，距离为10
+        // 将点光源添加到场景中
+        scene.add(pointLight);
         function onMapClick(event) {
             // 获取鼠标点击位置的坐标
             const mouse = new THREE.Vector2();
@@ -249,33 +252,24 @@ const installMap=(Length=5,BoxSize=12)=>{
                 const intersectedObject = intersects[0].object;
                 // 检查材质是否存在
                 if (intersectedObject.material.emissive) {
-                    // 如果之前有发光的格子，停止发光
-                    if (currentGlowingObject) {
-                        currentGlowingObject.material.emissive.set(0x000000); // 停止发光
-                    }
-                    // 设置边缘微光效果
-                    const edgeGlowColor = 0x00ff00; // 绿色
-                    intersectedObject.material.emissive.set(edgeGlowColor);
-                    intersectedObject.material.emissiveIntensity = 0.1; // 微光强度
-
-                    // 更新当前发光的格子
-                    currentGlowingObject = intersectedObject;
 
                     // 获取格子的坐标
                     const gridPosition = intersectedObject.position;
                     console.log('Clicked grid position:', gridPosition);
+                    // 设置点光源的位置为点击的格子位置
+                    pointLight.position.copy(gridPosition);
                 }
             }
         }
 
         const BoxAnimate=()=>{
-            if (currentGlowingObject) {
-                // 呼吸灯效果：改变发光强度
-                const time = Date.now() * 0.001; // 根据时间计算强度
-                const breathSpeed = 2; // 调整呼吸灯的速度，较小的值表示更快的变化
-                const glowIntensity = 0.5 + 0.5 * Math.sin(time * breathSpeed); // 呼吸灯效果
-                currentGlowingObject.material.emissiveIntensity = glowIntensity;
-            }
+            // if (currentGlowingObject) {
+            //     // 呼吸灯效果：改变发光强度
+            //     const time = Date.now() * 0.001; // 根据时间计算强度
+            //     const breathSpeed = 2; // 调整呼吸灯的速度，较小的值表示更快的变化
+            //     const glowIntensity = 0.5 + 0.5 * Math.sin(time * breathSpeed); // 呼吸灯效果
+            //     currentGlowingObject.material.emissiveIntensity = glowIntensity;
+            // }
         }
 
 
